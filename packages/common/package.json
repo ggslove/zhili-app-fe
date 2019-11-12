@@ -1,0 +1,14 @@
+{
+  "name": "@zhili/common",
+  "version": "1.0.0",
+  "main": "dist/index.js",
+  "typings": "dist/index.d.ts",
+  "scripts": {
+    "build1": "tsc --outDir ./dist"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "cross-env": "5.0.5",
+    "typescript": "^3.6.4"
+  }
+}
