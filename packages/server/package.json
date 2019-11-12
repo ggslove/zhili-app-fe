@@ -4,8 +4,8 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "run-app": "node -r ts-node/register ./app.ts",
-    "run-app2": "tsnd --respawn ./app.ts",
+    "run-app": "node -r ts-node/register ./main.ts",
+    "run-app2": "tsnd --respawn ./main.ts",
     "build1": "tsc --outDir ./dist"
   },
   "dependencies": {

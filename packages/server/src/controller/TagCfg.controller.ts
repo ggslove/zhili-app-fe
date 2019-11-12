@@ -16,6 +16,6 @@ class TagCfgController {
 
   @Get("/list")
   public list() {
-    return { data: "a" };
+    return { data: "a12223333" };
   }
 }
