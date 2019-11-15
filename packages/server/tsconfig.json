@@ -9,6 +9,12 @@
     "declaration": true,
     "emitDecoratorMetadata": true,
     "strictPropertyInitialization": false,
-    "experimentalDecorators": true
-  }
+    "experimentalDecorators": true,
+    "baseUrl": ".",
+    "paths": {
+      "src/*": ["src/*"]
+    }
+  },
+  "include": ["./src/**/*"],
+  "exclude": ["node_modules"]
 }

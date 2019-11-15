@@ -1,6 +1,6 @@
 import Koa from "koa";
-import { db1 } from "./src/config/DbCfg";
-import { bootstrapControllers } from "./src/decorator/BootController";
+import { db1 } from "src/config/DbCfg";
+import { bootstrapControllers } from "src/decorator/BootController";
 
 const app = new Koa();
 const KOA_PORT = 3000;

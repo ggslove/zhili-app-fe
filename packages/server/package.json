@@ -30,6 +30,7 @@
     "cross-env": "5.0.5",
     "jest": "^24.9.0",
     "ts-node-register": "^1.0.0",
+    "tsconfig-paths":"^3.9.0",
     "typescript": "^3.6.4"
   }
 }
