@@ -1,12 +1,8 @@
 import 'reflect-metadata';
 //  编写 swagger api文档
-
 // 搭建 针对 swagger的mocker server  mocker server 加入
-
 // 后台编写代码
 // import {Paths} from 'swagger2/dist/schema';
-
-
 //  swagger  ParameterType 类型
 //  ParameterType = 'query' | 'path' | 'body' | 'header' | 'formData';
 
@@ -23,7 +19,7 @@ import 'reflect-metadata';
  *  }
  * 
  */
-
+import {Definition} from 'swagger2/src/schema';
 
 interface PathParam{
   name?:string;
@@ -35,16 +31,34 @@ function Path(param:PathParam):ParameterDecorator{
   return (target:Object,propertyKey:Symbol|string, index:number)=>{
     console.log(target)
     console.log(Reflect.getMetadata("design:paramtypes",target))
-    //反射获取具体的累
+    //反射获取具体的类
   }
 }
 
-// body
 function Body(param:PathParam):ParameterDecorator{
   return (target:Object,propertyKey:Symbol|string, index:number)=>{
     console.log(propertyKey)
-    console.log(Reflect.getMetadata("design:paramtypes",target,))
+    const obj=Reflect.getMetadata("design:paramtypes",target,);
+    console.log(obj)
     //反射获取具体的类
+  }
+}
+
+function Service():ClassDecorator{
+  return (target: object)=>{
+    const obj=Reflect.getMetadata("design:paramtypes",target,);
+    console.log(obj)
+  }
+}
+
+
+//PropertyDecorator，ParameterDecorator 都获取不了具体的 属性类型，
+function propTest():PropertyDecorator{
+  return (target: Object, key: string | symbol)=>{
+    var t = Reflect.getMetadata("design:type", target, key);
+    console.log("----------propTest---------------")
+    console.log(`${key?key.toString():""} type: ${t.name}`);
+    console.log("----------propTest END---------------")
   }
 }
 
@@ -57,10 +71,15 @@ function logParamTypes(target : any, key : string) {
   console.log(types[2])
   console.log(`${key} param types: ${s}`);
 } 
+
+@Service()
 class Controller{
+ @propTest()
+  private ppp:PathParam={};
   constructor(public abc:string="aahah"){
   }
   findUser(@Path({name:"username",type:"string",required:true}) username:string){
+    console.log(this.ppp);
   }
   saveUser(@Body({name:"username",type:"string",required:true}) user:{name?:string}){
   }
@@ -77,4 +96,3 @@ class Controller{
     return 1;
   }
 }
-

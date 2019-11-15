@@ -10,7 +10,6 @@ __tmp
 dist
 package-lock.json
 tgz
-.vscode
 log
 /packages/**/node_modules
 /package/**/dist

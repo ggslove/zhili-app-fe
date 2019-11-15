@@ -1,0 +1,30 @@
+{
+  // Use IntelliSense to learn about possible attributes.
+  // Hover to view descriptions of existing attributes.
+  // For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
+  //   ,"env": { "TS_NODE_PROJECT": "./packages/common/tsconfig.json" }
+  // 
+
+
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Common ",
+      "protocol": "inspector",
+      "cwd": "${workspaceFolder}/packages/common",
+      "args": ["src/${fileBasename}"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register","-r","tsconfig-paths/register"],
+    },
+    {
+      "type": "node",
+      "request": "launch",
+      "name": "Launch Server",
+      "protocol": "inspector",
+      "cwd": "${workspaceFolder}/packages/server",
+      "args": ["src/${fileBasename}"],
+      "runtimeArgs": ["--nolazy", "-r", "ts-node/register","-r","tsconfig-paths/register"],
+    }
+  ]
+}
