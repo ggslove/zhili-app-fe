@@ -1,6 +1,6 @@
 import { getCustomRepository } from "typeorm";
+import { Service } from "@zhili/common/src/mvc/decorator/";
 import TagCfgRepository from "../repository/TagCfg.repository";
-import { Service } from "../decorator/ServiceDecorator";
 
 @Service()
 export default class TagCfgService {
@@ -9,6 +9,9 @@ export default class TagCfgService {
   constructor() {
     this.tagCfgRepository = getCustomRepository(TagCfgRepository);
   }
+
+  // 返回的具体参数
+
   pageByName(name: string) {
     return { test: name };
     //return this.tagCfgRepository.pageByName(name);

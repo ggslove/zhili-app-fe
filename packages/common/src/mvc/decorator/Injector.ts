@@ -1,4 +1,4 @@
-import { Type } from "./ServiceDecorator";
+import { Type } from "../../decorator/index";
 
 /**
  * The Injector stores services and resolves requested instances.

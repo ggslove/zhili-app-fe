@@ -40,3 +40,9 @@
   ]
 }
 ```
+
+#### typescript
+
+- design:type  类装饰，能取到具体的类型
+- design:paramtypes  函数参数装饰，能取到具体对象
+- design:returntype  函数装饰，能取到具体类型

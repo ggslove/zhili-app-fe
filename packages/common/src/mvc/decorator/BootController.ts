@@ -2,12 +2,17 @@ import Koa, { Context, Request, Response } from "koa";
 import Router from "koa-router";
 import koaBody from "koa-body";
 import "reflect-metadata";
-import { importClassesFromDirectories } from "../util/importClasses";
-import { controllerList } from "./ControllerDecorator";
-import { routeList } from "./MethodDecorator";
-import { ParamType, paramList } from "./ParamDecorator";
-import { ParseType, parseList } from "./ParseDecorator";
-import { Injector } from "./Injector";
+import { importClassesFromDirectories } from "../../util/importClasses";
+import {
+  controllerList,
+  routeList,
+  ParamType,
+  paramList,
+  Injector,
+  Parse
+} from "./";
+
+import {swaggerApiList} from '../../swagger';
 
 const router = new Router();
 type NextFunction = () => Promise<any>;
@@ -63,7 +68,12 @@ export const bootstrapControllers = async (
     // app.use(bodyParser());
   }
   const routes = controllerToRoutes(params);
+  
   app.use(routes);
+
+  
+  console.log(swaggerApiList)
+  swaggerApiList;
 };
 
 function controllerToRoutes(params: IKoaControllerOptions) {
@@ -78,8 +88,7 @@ function controllerToRoutes(params: IKoaControllerOptions) {
         const handler = handlerFactory(
           ctl,
           func,
-          paramList.filter(param => param.name === funcName),
-          parseList.filter(parse => parse.name === funcName)
+          paramList.filter(param => param.name === funcName&& param.target===cTarget.prototype)
         );
         router[type](
           `${params.basePath ? params.basePath : ""}${basePath}${path}`,
@@ -94,8 +103,7 @@ function controllerToRoutes(params: IKoaControllerOptions) {
 function handlerFactory(
   ctl: object,
   func: (...args: any[]) => any,
-  paramList: ParamType[],
-  parseList: ParseType[]
+  paramList: ParamType[]
 ) {
   return async (ctx: Context, next: NextFunction) => {
     try {
@@ -104,8 +112,7 @@ function handlerFactory(
         ctx.request,
         ctx.response,
         next,
-        paramList,
-        parseList
+        paramList
       );
       // 使用方法 apply具体对象，参数
       const result = await func.apply(ctl, args);
@@ -117,19 +124,35 @@ function handlerFactory(
   };
 }
 
+function parseData(value: any, parse: Parse) {
+  if (!parse) {
+    return value;
+  }
+  switch (parse) {
+    case "number":
+      value = +value;
+      break;
+    case "string":
+      value = value + "";
+      break;
+    case "boolean":
+      value = Boolean(value);
+      break;
+  }
+  return value;
+}
+
 function extractParameters(
   req: Request,
   res: Response,
   next: NextFunction,
-  paramArr: ParamType[] = [],
-  parseArr: ParseType[] = []
+  paramArr: ParamType[] = []
 ) {
   if (!paramArr.length) return [req, res, next];
-
   const args: any[] = [];
   // 进行第三层遍历
   paramArr.forEach(param => {
-    const { key, index, type } = param;
+    const { key, index, type, parse } = param;
     // 获取相应的值，如 @Query('id') 则为 req.query.id
     switch (type) {
       case "query":
@@ -143,23 +166,10 @@ function extractParameters(
         break;
       // ...
     }
+    args[index] = parseData(args[index], parse);
   });
 
   // 小优化，处理参数类型
-  parseArr.forEach(parse => {
-    const { type, index } = parse;
-    switch (type) {
-      case "number":
-        args[index] = +args[index];
-        break;
-      case "string":
-        args[index] = args[index] + "";
-        break;
-      case "boolean":
-        args[index] = Boolean(args[index]);
-        break;
-    }
-  });
   args.push(req, res, next);
   return args;
 }
