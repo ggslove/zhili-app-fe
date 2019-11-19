@@ -7,9 +7,9 @@ const KOA_PORT = 3000;
 
 async function init() {
   const dbConnect = await db1;
-  console.log(__dirname + "/controller/*.controller.ts")
   await bootstrapControllers(app, {
-    controllers: [__dirname + "/controller/*.controller.ts"],
+    initBodyParser:true,
+    controllers: [__dirname + "/controller/*.controller.ts",__dirname + "/dto/*.dto.ts",],
     basePath: "/api"
   });
 }

@@ -13,3 +13,5 @@ export type GenericClassDecorator<T> = (target: T) => void;
 export type GenericMethodDecorator<T>=(target: T, name: any, descriptor: TypedPropertyDescriptor<T>)=>void;
 
 export type GenericParameterDecorator<T>=(target: T, propertyKey: any, parameterIndex: number)=>void;
+export type GenericPropertyDecorator<T> = (target: T, propertyKey: string | symbol) => void;
+

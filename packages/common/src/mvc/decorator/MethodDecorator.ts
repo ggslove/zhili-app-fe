@@ -1,6 +1,6 @@
-import {GenericMethodDecorator,Type} from '../../decorator';
-import {SApiHttpMethod,SApiPath} from '../../swagger/';
-import {path2Swagger} from '../../util/pathUtil';
+import { GenericMethodDecorator, Type } from "../../decorator";
+import { SApiHttpMethod, SApiPath, SApiResult } from "../../swagger/";
+import { path2Swagger } from "../../util/pathUtil";
 interface RouteType {
   target: Type<any>;
   type: HttpMethod;
@@ -21,15 +21,21 @@ export function createMethodDecorator(type: HttpMethod = "get") {
         path,
         func: descriptor.value
       });
+
       //加入 Swagger的 HttpMethod 内容
-      SApiPath(path2Swagger(path))(target,name,descriptor);
-      SApiHttpMethod(type)(target,name,descriptor);
-
+      SApiPath(path2Swagger(path))(target, name, descriptor);
+      SApiHttpMethod(type)(target, name, descriptor);
       //TODO:返回参数responses
-
+      const returnObject = Reflect.getMetadata(
+        "design:returntype",
+        target,
+        name
+      );
+      // if (returnObject) {
+      //   SApiResult({target:returnObject})(target, name, descriptor);
+      // }
     };
 }
-
 
 export const Get = createMethodDecorator("get");
 export const Post = createMethodDecorator("post");

@@ -6,13 +6,13 @@ import { importClassesFromDirectories } from "../../util/importClasses";
 import {
   controllerList,
   routeList,
-  ParamType,
+  ParamConfig,  
   paramList,
   Injector,
   Parse
 } from "./";
 
-import {swaggerApiList} from '../../swagger';
+import {swaggerApiList,swaggerApiParamCfgList} from '../../swagger';
 
 const router = new Router();
 type NextFunction = () => Promise<any>;
@@ -69,12 +69,21 @@ export const bootstrapControllers = async (
   }
   const routes = controllerToRoutes(params);
   
+  handlerSwagger();
+
   app.use(routes);
+  
+};
+
+
+const handlerSwagger=()=>{
+  //处理 swagger 数据
 
   
-  console.log(swaggerApiList)
-  swaggerApiList;
-};
+
+
+}
+
 
 function controllerToRoutes(params: IKoaControllerOptions) {
   controllerList.forEach(controller => {
@@ -103,7 +112,7 @@ function controllerToRoutes(params: IKoaControllerOptions) {
 function handlerFactory(
   ctl: object,
   func: (...args: any[]) => any,
-  paramList: ParamType[]
+  paramList: ParamConfig[]
 ) {
   return async (ctx: Context, next: NextFunction) => {
     try {
@@ -146,7 +155,7 @@ function extractParameters(
   req: Request,
   res: Response,
   next: NextFunction,
-  paramArr: ParamType[] = []
+  paramArr: ParamConfig[] = []
 ) {
   if (!paramArr.length) return [req, res, next];
   const args: any[] = [];
@@ -159,9 +168,9 @@ function extractParameters(
         args[index] = key ? req.query[key] : req.query;
         break;
       case "body":
-        args[index] = key ? req.body[key] : req.body;
+        args[index] = key ? (key==='body'?req.body:req.body[key]) : req.body;
         break;
-      case "headers":
+      case "header":
         args[index] = key ? req.headers[key.toLowerCase()] : req.headers;
         break;
       // ...
