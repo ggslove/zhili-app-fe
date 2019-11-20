@@ -115,11 +115,16 @@ function handerSwaggerApiCfgParameters(swaggerApiCfg:
       required: cfg.required
     };
   };
-  swaggerParameterCfgList
-    .filter((cfg, idx) => {
-      cfg.target === swaggerApiCfg.target && cfg.name === swaggerApiCfg.name;
-    })
-    .map(cfg => {
+
+  console.log(swaggerApiCfg);
+  console.log(swaggerParameterCfgList);
+
+  const thisParameterCfgs=  swaggerParameterCfgList
+  .filter((cfg, idx) => {
+    return cfg.target === swaggerApiCfg.target && cfg.name === swaggerApiCfg.name;
+  });
+  console.log(thisParameterCfgs);
+  thisParameterCfgs. map(cfg => {
       if (cfg.inType === "path" ||
         cfg.inType === "header" ||
         cfg.inType === "formData") {
