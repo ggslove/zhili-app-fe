@@ -1,4 +1,4 @@
-import { SwgClass, SwgProperty } from "@zhili/common/src/swagger/index";
+import { SwgClass, SwgProperty } from "@zhili/common/src/swagger/decorator";
 
 @SwgClass()
 export class TagCfgDto {

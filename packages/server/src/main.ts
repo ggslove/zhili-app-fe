@@ -1,6 +1,6 @@
 import Koa from "koa";
 import { db1 } from "src/config/DbCfg";
-import { bootstrapControllers } from "@zhili/common/src/mvc/decorator/";
+import { bootstrapControllers } from "@zhili/common/src/boot";
 
 const app = new Koa();
 const KOA_PORT = 3000;
@@ -21,3 +21,5 @@ init()
     });
   })
   .catch(err => console.error(err));
+
+

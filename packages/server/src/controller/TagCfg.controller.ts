@@ -1,23 +1,18 @@
-import { Controller } from "@zhili/common/src/mvc/decorator/ControllerDecorator";
-import { Get, Post } from "@zhili/common/src/mvc/decorator/MethodDecorator";
+
 import {
+  Controller,
+  Get, Post,
   Path,
   Query,
   Body
-} from "@zhili/common/src/mvc/decorator/ParamDecorator";
-import { SApiTags, SApiSummary, SApiResult } from "@zhili/common/src/swagger";
-import {
-  swaggerApiList,
-  swaggerApiParamCfgList,
-  swaggerClassList,
-  swaggerApiResultList,
-  IResponseData
-} from "@zhili/common/src/swagger";
+} from "@zhili/common/src/mvc/decorator";
+import { SApiTags, SApiSummary, SApiResult } from "@zhili/common/src/swagger/decorator";
 import { TagCfgDto } from "src/dto";
-import { ResponseBuilder } from "src/vo/Response.vo";
+import { ResponseBuilder, ReponseData } from "src/vo/Response.vo";
 import HttpStatus from "@zhili/common/src/util/HttpStatus";
 import { TagCfgVo } from "src/vo/TagCfg.vo";
 import TagCfgService from "../service/TagCfg.service";
+import { PaginationVo } from "src/vo/Pagination.vo";
 const sTag = SApiTags(["TagCfg"]);
 
 /**
@@ -26,11 +21,11 @@ const sTag = SApiTags(["TagCfg"]);
  */
 @Controller("/tagcfg")
 class TagCfgController {
-  public constructor(protected tagCfgService: TagCfgService) {}
+  public constructor(protected tagCfgService: TagCfgService) { }
 
   @Get("/index")
   @sTag
-  index(@Query({ key: "id", parse: "number" }) id: number): string {
+  index(@Query({ key: "id", parse: "number", isArray: false }) id: number): string {
     // 装饰参数
     return this.tagCfgService.pageByName("nanana:" + id).test;
   }
@@ -40,12 +35,15 @@ class TagCfgController {
   @sTag
   @SApiSummary("保存tagCfg")
   @SApiResult([
-    { data: TagCfgVo, code: HttpStatus.OK },
-    { code: HttpStatus.BAD_REQUEST, description: "400错误" }
+    { code: HttpStatus.OK, type: "object", ref: TagCfgVo },
+    { code: HttpStatus.BAD_REQUEST, type: "string", description: "400错误" }
   ])
+
+  //array 
   save(
-    @Body({ parse: "object", key: "body", ref: TagCfgDto }) tagCfgDto: TagCfgDto
-  ): IResponseData<any> {
+    @Body({ key: "body", parse: "object", ref: TagCfgDto, isArray: false })
+    tagCfgDto: TagCfgDto
+  ): ReponseData<any> {
     return ResponseBuilder()
       .data(tagCfgDto)
       .code(HttpStatus.OK)
@@ -56,26 +54,30 @@ class TagCfgController {
   @sTag
   @SApiSummary("获取tagCfg")
   @SApiResult([
-    { data: TagCfgVo, code: HttpStatus.OK },
-    { code: HttpStatus.BAD_REQUEST, description: "400错误" }
+    { code: HttpStatus.OK, type: "object", ref: TagCfgVo },
+    { code: HttpStatus.BAD_REQUEST, type: "string", description: "BAD_REQUEST" }
   ])
-  get(@Path({ key: "id", parse: "number" }) id: number): IResponseData<any> {
+  get(
+    @Path({ key: "id", parse: "number" })
+    id: number
+  ): ReponseData<any> {
     return ResponseBuilder()
       .data(id)
       .code(HttpStatus.OK)
       .build();
   }
 
-  
-
   @Post("/page")
   @sTag
   @SApiSummary("分页获取tagCfg")
+  @SApiResult([
+    { code: HttpStatus.OK, type: "pagination", ref: TagCfgVo },
+    { code: HttpStatus.BAD_REQUEST, type: "string", description: "BAD_REQUEST" }
+  ])
   page(
-    @Body({ parse: "object", key: "body", ref: TagCfgDto })
+    @Body({ parse: "object", key: "body", isArray: false, ref: TagCfgDto })
     tagCfgDto: TagCfgDto
-  ): IResponseData<any> {
-    console.log(tagCfgDto);
+  ): ReponseData<any> {
     return ResponseBuilder()
       .data([tagCfgDto])
       .code(HttpStatus.OK)
@@ -86,11 +88,7 @@ class TagCfgController {
   @Get("/list")
   public list() {
     return {
-      swaggerApiList,
-      swaggerApiParamCfgList,
-      swaggerClassList,
-      swaggerApiResultList
+     
     };
   }
-
 }

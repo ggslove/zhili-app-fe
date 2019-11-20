@@ -2,17 +2,15 @@ import Koa, { Context, Request, Response } from "koa";
 import Router from "koa-router";
 import koaBody from "koa-body";
 import "reflect-metadata";
-import { importClassesFromDirectories } from "../../util/importClasses";
 import {
   controllerList,
   routeList,
-  ParamConfig,  
   paramList,
-  Injector,
-  Parse
-} from "./";
+} from "../mvc/";
+import { importClassesFromDirectories,Injector } from "../util/";
+import {handlerSwaggerToDocument} from '../swagger/SwaggerHandler';
+import { SwaggerTypes } from "../types/SwaggerTypes";
 
-import {swaggerApiList,swaggerApiParamCfgList} from '../../swagger';
 
 const router = new Router();
 type NextFunction = () => Promise<any>;
@@ -68,21 +66,17 @@ export const bootstrapControllers = async (
     // app.use(bodyParser());
   }
   const routes = controllerToRoutes(params);
-  
-  handlerSwagger();
+
+  const d=handlerSwaggerToDocument();
+
+  app.use(async (ctx,next)=>{
+    ctx.body=d;
+  })
 
   app.use(routes);
-  
 };
 
 
-const handlerSwagger=()=>{
-  //处理 swagger 数据
-
-  
-
-
-}
 
 
 function controllerToRoutes(params: IKoaControllerOptions) {
@@ -97,7 +91,10 @@ function controllerToRoutes(params: IKoaControllerOptions) {
         const handler = handlerFactory(
           ctl,
           func,
-          paramList.filter(param => param.name === funcName&& param.target===cTarget.prototype)
+          paramList.filter(
+            param =>
+              param.name === funcName && param.target === cTarget.prototype
+          )
         );
         router[type](
           `${params.basePath ? params.basePath : ""}${basePath}${path}`,
@@ -112,7 +109,7 @@ function controllerToRoutes(params: IKoaControllerOptions) {
 function handlerFactory(
   ctl: object,
   func: (...args: any[]) => any,
-  paramList: ParamConfig[]
+  paramList: SwaggerTypes.ParamConfig[]
 ) {
   return async (ctx: Context, next: NextFunction) => {
     try {
@@ -133,7 +130,7 @@ function handlerFactory(
   };
 }
 
-function parseData(value: any, parse: Parse) {
+function parseData(value: any, parse: SwaggerTypes.ParseType) {
   if (!parse) {
     return value;
   }
@@ -155,20 +152,24 @@ function extractParameters(
   req: Request,
   res: Response,
   next: NextFunction,
-  paramArr: ParamConfig[] = []
+  paramArr: SwaggerTypes.ParamConfig[] = []
 ) {
   if (!paramArr.length) return [req, res, next];
   const args: any[] = [];
   // 进行第三层遍历
   paramArr.forEach(param => {
-    const { key, index, type, parse } = param;
+    const { key, index, inType, parse } = param;
     // 获取相应的值，如 @Query('id') 则为 req.query.id
-    switch (type) {
+    switch (inType) {
       case "query":
         args[index] = key ? req.query[key] : req.query;
         break;
       case "body":
-        args[index] = key ? (key==='body'?req.body:req.body[key]) : req.body;
+        args[index] = key
+          ? key === "body"
+            ? req.body
+            : req.body[key]
+          : req.body;
         break;
       case "header":
         args[index] = key ? req.headers[key.toLowerCase()] : req.headers;

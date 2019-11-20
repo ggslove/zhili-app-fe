@@ -1,7 +1,6 @@
 import HttpStatus from '@zhili/common/src/util/HttpStatus';
-import {IResponseData} from  '@zhili/common/src/swagger/index';
 
-export class ReponseData<T> implements IResponseData<T>{
+export class ReponseData<T> {
   public constructor(data:T|undefined,code:HttpStatus,description:string| undefined){
     this.data=data;
     this.code=code;
