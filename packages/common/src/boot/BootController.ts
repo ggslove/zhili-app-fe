@@ -4,11 +4,13 @@ import Router from "koa-router";
 import koaBody from "koa-body";
 import "reflect-metadata";
 import { controllerList, routeList, paramList } from "../mvc/";
-import { importClassesFromDirectories, Injector } from "../util/";
+import { importClassesFromDirectories, Injector,findKeyNameValueInPath } from "../util/";
 import { handlerSwaggerToDocument } from "../swagger/SwaggerHandler";
 import { SwaggerTypes } from "../types/SwaggerTypes";
 import { ui } from "swagger2-koa";
 import {Document} from 'swagger2/src/schema';
+
+
 
 const router = new Router();
 export let options: CommonTypes.IKoaControllerOptions;
@@ -65,28 +67,31 @@ function controllerToRoutes(options: CommonTypes.IKoaControllerOptions) {
       .filter(({ target }) => target === cTarget.prototype)
       .forEach(route => {
         const { name: funcName, type, path, func } = route;
+        const fullPath=`${options.swaggerDoc.basePath ? options.swaggerDoc.basePath : ""}${basePath}${path}`;
         const handler = handlerFactory(
           ctl,
+          fullPath,
           func,
           paramList.filter(
             param =>
               param.name === funcName && param.target === cTarget.prototype
           )
         );
-        router[type](
-          `${
-            options.swaggerDoc.basePath ? options.swaggerDoc.basePath : ""
-          }${basePath}${path}`,
-          handler
-        );
+        router[type](fullPath, handler);
         // use handler方法
       });
   });
+
+  console.log(router.routes());
   return router.routes();
 }
 
+
+
+
 function handlerFactory(
   ctl: object,
+  path:string,
   func: (...args: any[]) => any,
   paramList: SwaggerTypes.ParamConfig[]
 ) {
@@ -94,17 +99,19 @@ function handlerFactory(
     try {
       // 获取路由函数的参数
       const args = extractParameters(
+        path,
         ctx.request,
         ctx.response,
         next,
         paramList
       );
-      // 使用方法 apply具体对象，参数
-      const result = await func.apply(ctl, args);
-      ctx.body = result;
+        const result = await func.apply(ctl, args);
+        ctx.body = result;
     } catch (err) {
-      // 处理异常
-      throw err;
+      //TODO:错误日志输出到文件中
+      console.error(err);
+      ctx.body = err.message;
+      ctx.status=500;
     }
   };
 }
@@ -128,6 +135,7 @@ function parseData(value: any, parse: SwaggerTypes.ParseType) {
 }
 
 function extractParameters(
+  path:string,
   req: Request,
   res: Response,
   next: CommonTypes.NextFunction,
@@ -153,6 +161,9 @@ function extractParameters(
       case "header":
         args[index] = key ? req.headers[key.toLowerCase()] : req.headers;
         break;
+      case "path":
+        args[index] = findKeyNameValueInPath(req.url,path ,key);
+        break;
       // ...
     }
     args[index] = parseData(args[index], parse);
@@ -162,3 +173,4 @@ function extractParameters(
   args.push(req, res, next);
   return args;
 }
+

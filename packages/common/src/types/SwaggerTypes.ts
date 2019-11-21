@@ -2,11 +2,20 @@ import { ParameterType, DataFormat, DataType } from "swagger2/src/schema";
 import HttpStatus from "./HttpStatus";
 
 export namespace SwaggerTypes {
+ 
   export interface SwaggerControllerCfg{
     target: CommonTypes.Type<any>; //类对象
+    name:string;
+    description:string;
     path:string;
   }
 
+  export interface SwaggerTagInfo{
+    name:string;
+    description:string;
+    
+    [extendKey:string]:any;
+  }
   export interface SwaggerApiCfg {
     target: CommonTypes.Type<any>; //类对象
     name: string; //方法名 必填

@@ -3,6 +3,7 @@ namespace WebTypes {
 
 export interface ControllerType {
   path: string;
+  name:string;
   target: CommonTypes.Type<any>;
 }
 

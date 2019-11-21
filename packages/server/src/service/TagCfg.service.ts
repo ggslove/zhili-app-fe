@@ -1,13 +1,10 @@
 import { getCustomRepository } from "typeorm";
-import { Service } from "@zhili/common/src/mvc/decorator/";
 import TagCfgRepository from "../repository/TagCfg.repository";
+import { Service } from "@zhili/common/src/mvc/decorator/";
 import { TagCfgDto } from "src/dto";
+import { TagCfg } from "@zhili/character-tag/src";
+import { AffectVo } from "src/vo/Affect.vo";
 
-
-/**
- * service 层返回的为 dto对象
- * 
- */
 @Service()
 export default class TagCfgService {
   // service controller 传入 service层
@@ -15,17 +12,38 @@ export default class TagCfgService {
   constructor() {
     this.tagCfgRepository = getCustomRepository(TagCfgRepository);
   }
-
-
-  
-  save(tagCfgDto:TagCfgDto){
-    
+  async save(tagCfgDto:TagCfgDto):Promise<AffectVo>{
+    //TODO
+    //   tagCfgDot=> new TagCfg();//相同属性拷贝
+    try{
+      return {affected:1}
+    }catch (error){
+      return error;
+    }
   }
 
-  // 返回的具体参数
+  async update(id:number,tagCfgDto:TagCfgDto):Promise<any>{
+    //TODO 处理具体的搜索
+    //tagCfgDot=> new TagCfg();//相同属性拷贝
+    return "";
+  }
 
-  pageByName(name: string) {
-    return { test: name };
-    //return this.tagCfgRepository.pageByName(name);
+  async remove(id:number):Promise<AffectVo>{
+    const deleteResult=await this.tagCfgRepository.delete({id});
+    return {affected:deleteResult.affected!}
+  }
+
+  async batchRemove(ids:Array<number>):Promise<any>{
+
+  }
+  // 返回的具体参数
+  async page(tagCfgDto:TagCfgDto):Promise<any>{
+    //TODO 处理具体的搜索
+    //const meta=this.tagCfgRepository.metadata;
+  }
+
+  async list(tagCfgDto:TagCfg):Promise<any>{
+   //TODO 处理具体的搜索
+
   }
 }

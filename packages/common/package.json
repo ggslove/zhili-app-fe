@@ -7,19 +7,22 @@
     "build1": "tsc --outDir ./dist"
   },
   "dependencies": {
-    "swagger2-koa":"2.0.0",
+   
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
     "koa-router": "^7.4.0",
-    "reflect-metadata": "^0.1.13"
+    "path-to-regexp": "^6.1.0",
+    "reflect-metadata": "^0.1.13",
+    "swagger2-koa": "2.0.0"
   },
   "devDependencies": {
-    "cross-env": "5.0.5",
-    "typescript": "^3.6.4",
     "@types/koa": "^2.0.49",
     "@types/koa-router": "^7.0.42",
+    "@types/path-to-regexp": "^1.7.0",
+    "cross-env": "5.0.5",
+    "pont-engine": "^0.3.4",
     "ts-node-register": "^1.0.0",
-    "tsconfig-paths":"^3.9.0",
-    "pont-engine":"^0.3.4"
+    "tsconfig-paths": "^3.9.0",
+    "typescript": "^3.6.4"
   }
 }

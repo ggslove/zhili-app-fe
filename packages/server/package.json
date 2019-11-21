@@ -4,8 +4,7 @@
   "main": "dist/index.js",
   "typings": "dist/index.d.ts",
   "scripts": {
-    "run-app": "node -r ts-node/register    ./main.ts",
-    "run-app2": "ts-node-dev  --respawn  -r tsconfig-paths/register  src/main.ts",
+    "dev": "ts-node-dev  --respawn  -r tsconfig-paths/register  src/main.ts",
     "build1": "tsc --outDir ./dist"
   },
   "dependencies": {

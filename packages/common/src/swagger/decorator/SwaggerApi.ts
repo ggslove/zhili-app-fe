@@ -27,16 +27,15 @@ const createSwaggerApiDeccorator = <T>(key: keyof SwaggerTypes.SwaggerApiCfg) =>
 };
 
 export const SApiPath = createSwaggerApiDeccorator<string>("path");
-export const SApiTags = createSwaggerApiDeccorator<Array<string>>("tags");
+// export const SApiTags = createSwaggerApiDeccorator<Array<string>>("tags");
 export const SApiSummary = createSwaggerApiDeccorator<string>("summary");
 export const SApiHttpMethod = createSwaggerApiDeccorator<WebTypes.HttpMethod>(
   "httpMethod"
 );
 
-export const SApiController=(data:{target:CommonTypes.Type<any>,path:string})=>{
+export const SApiController=(data:SwaggerTypes.SwaggerControllerCfg)=>{
   swaggerControllerCfgList.push(data);
 }
-
 // export const SApiDescription = createSwaggerApiDeccorator<string>(
 //   "description"
 // );

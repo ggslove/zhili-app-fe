@@ -2,6 +2,7 @@
 const info: CommonTypes.SwaggerInfo = {
   host: "localhost",
   title: "宇宙无敌大系统",
+  description:"哈哈哈哈",
   version: "1.0"
 };
 const basePath = "/api";
