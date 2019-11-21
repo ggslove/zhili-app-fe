@@ -27,7 +27,6 @@ export const handlerSwaggerToDocument = (options:CommonTypes.IKoaControllerOptio
     console.error("-------swagger 配置异常---------------")
     console.error(errorMessages.join("\r\n"));
     return null;
-    console.error("-------swagger 配置异常结束---------------")
   }
   swaggerFieldCfgList.map((fieldCfg, index) => {
     if (!swaggerClassMap.has(fieldCfg.target)) {
@@ -55,9 +54,9 @@ export const handlerSwaggerToDocument = (options:CommonTypes.IKoaControllerOptio
       produces: swaggerApiCfg.produces,
     };
     //------------parameters--------------
-    path["parameters"] = handerSwaggerApiCfgParameters(swaggerApiCfg);
+    path[swaggerApiCfg.httpMethod!]["parameters"] = handerSwaggerApiCfgParameters(swaggerApiCfg);
     //------------responses--------------
-    path["responses"] = handerSwaggerApiCfgResponse(swaggerApiCfg);
+    path[swaggerApiCfg.httpMethod!]["responses"] = handerSwaggerApiCfgResponse(swaggerApiCfg);
 
   });
 
@@ -191,18 +190,18 @@ function handerSwaggerApiCfgResponse(swaggerApiCfg: SwaggerTypes.SwaggerApiCfg) 
     if (resultCfg.target === swaggerApiCfg.target &&
       resultCfg.name === swaggerApiCfg.name) {
       if (resultCfg.type === "string") {
-        responses[resultCfg.code] = { description: resultCfg.description };
+        responses[""+resultCfg.code] = { description: resultCfg.description };
       }
       else if (resultCfg.type === "object") {
-        responses[resultCfg.code] = {
+        responses[""+resultCfg.code] = {
           description: resultCfg.description,
-          schema: { $ref: `/definitions/${resultCfg.ref!.name}` }
+          schema: { $ref: `#/definitions/${resultCfg.ref!.name}` }
         };
       }
       else if (resultCfg.type === "array") {
-        responses[resultCfg.code] = {
+        responses[""+resultCfg.code] = {
           description: resultCfg.description,
-          schema: { items: { $ref: `/definitions/${resultCfg.ref!.name}` } }
+          schema: { items: { $ref: `#/definitions/${resultCfg.ref!.name}` } }
         };
       }
       else {

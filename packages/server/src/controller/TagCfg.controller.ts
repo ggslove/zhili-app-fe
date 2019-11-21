@@ -41,8 +41,6 @@ class TagCfgController {
     { code: HttpStatus.OK, type: "object", ref: TagCfgVo },
     { code: HttpStatus.BAD_REQUEST, type: "string", description: "400错误" }
   ])
-
-  //array 
   save(
     @Body({ key: "body", parse: "object", ref: TagCfgDto, isArray: false })
     tagCfgDto: TagCfgDto
@@ -89,6 +87,7 @@ class TagCfgController {
 
   // router 有顺序
   @Get("/list")
+  @sTag
   public list() {
     return {
      
