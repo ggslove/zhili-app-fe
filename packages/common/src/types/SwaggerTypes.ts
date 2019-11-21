@@ -2,6 +2,11 @@ import { ParameterType, DataFormat, DataType } from "swagger2/src/schema";
 import HttpStatus from "./HttpStatus";
 
 export namespace SwaggerTypes {
+  export interface SwaggerControllerCfg{
+    target: CommonTypes.Type<any>; //类对象
+    path:string;
+  }
+
   export interface SwaggerApiCfg {
     target: CommonTypes.Type<any>; //类对象
     name: string; //方法名 必填
@@ -86,7 +91,7 @@ export namespace SwaggerTypes {
   collectionFormat?: string;
   */
 
-  export type ParseType = "object" | "string" | "number" | "boolean"; //基本类型｜数组｜对象
+  export type ParseType = "object" | "string" | "integer"| "boolean"; //基本类型｜数组｜对象
 
   export interface IParamCfg {
     key: string; //关键字，query的name

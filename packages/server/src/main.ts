@@ -1,6 +1,7 @@
 import Koa from "koa";
 import { db1 } from "src/config/DbCfg";
 import { bootstrapControllers } from "@zhili/common/src/boot";
+import {swaggerDoc} from './config/Info'
 
 const app = new Koa();
 const KOA_PORT = 3000;
@@ -10,7 +11,7 @@ async function init() {
   await bootstrapControllers(app, {
     initBodyParser:true,
     controllers: [__dirname + "/controller/*.controller.ts",__dirname + "/dto/*.dto.ts",],
-    basePath: "/api"
+    swaggerDoc,
   });
 }
 

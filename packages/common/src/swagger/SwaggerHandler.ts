@@ -7,12 +7,14 @@ import {
   swaggerApiResultList,
   swaggerClassCfgList,
   swaggerFieldCfgList,
+  swaggerControllerCfgList
 } from ".";
+
 import {
   validateSwaggerApi,
   validateSwaggerClass
 } from './validate';
-export const handlerSwaggerToDocument = () => {
+export const handlerSwaggerToDocument = (options:CommonTypes.IKoaControllerOptions) => {
   //处理 swagger 数据
   const swaggerClassMap: Map<CommonTypes.Type<any>, Array<SwaggerTypes.SwaggerFieldCfg>> = new Map();
   //const refClassList:Array<Type<any>>=[];//所有ref列表
@@ -20,6 +22,7 @@ export const handlerSwaggerToDocument = () => {
   validateSwaggerApi(errorMessages);
   //校验SwaggerClass 中的配置
   validateSwaggerClass(errorMessages);
+
   if (errorMessages.length > 0) {
     console.error("-------swagger 配置异常---------------")
     console.error(errorMessages.join("\r\n"));
@@ -35,16 +38,21 @@ export const handlerSwaggerToDocument = () => {
   const definitions = handlerSwaggerDefinitions(swaggerClassMap);
   const paths: { [key: string]: { [key: string]: any } } = {};
   swaggerApiList.map((swaggerApiCfg, idx) => {
-    if (!paths.hasOwnProperty(swaggerApiCfg.path!)) {
-      paths[swaggerApiCfg.path!] = {};
+    const thisApiSwaggerControllers= swaggerControllerCfgList.filter(controllerCfg=> controllerCfg.target.prototype===swaggerApiCfg.target)
+    if(thisApiSwaggerControllers.length!=1){
+      throw new Error(`swaggerApiList target ${swaggerApiCfg.target.name}获取swaggerControllerCfg 不唯一 `)
     }
-    const path = paths[swaggerApiCfg.path!];
+    const fullPath=`${thisApiSwaggerControllers[0].path}${swaggerApiCfg.path!}`;
+    if (!paths.hasOwnProperty(fullPath)) {
+      paths[fullPath] = {};
+    }
+    const path = paths[fullPath];
     path[swaggerApiCfg.httpMethod!] = {
       tags: swaggerApiCfg.tags,
       summary: swaggerApiCfg.summary,
       description: swaggerApiCfg.description,
       operationId: swaggerApiCfg.name,
-      produces: swaggerApiCfg.produces
+      produces: swaggerApiCfg.produces,
     };
     //------------parameters--------------
     path["parameters"] = handerSwaggerApiCfgParameters(swaggerApiCfg);
@@ -52,11 +60,13 @@ export const handlerSwaggerToDocument = () => {
     path["responses"] = handerSwaggerApiCfgResponse(swaggerApiCfg);
 
   });
+
   return {
-    paths, definitions
+    ...options.swaggerDoc,
+    paths,
+    definitions
   }
 };
-
 
 
 function handlerSwaggerDefinitions(swaggerClassMap: Map<CommonTypes.Type<any>, SwaggerTypes.SwaggerFieldCfg[]>) {
@@ -111,8 +121,9 @@ function handerSwaggerApiCfgParameters(swaggerApiCfg:
       name: cfg.key,
       in: cfg.inType,
       description: cfg.description,
-      type: cfg.parseDataType,
-      required: cfg.required
+      type: cfg.parse,
+      required: cfg.required,
+      format:cfg.format,
     };
   };
 
@@ -122,8 +133,9 @@ function handerSwaggerApiCfgParameters(swaggerApiCfg:
   const thisParameterCfgs=  swaggerParameterCfgList
   .filter((cfg, idx) => {
     return cfg.target === swaggerApiCfg.target && cfg.name === swaggerApiCfg.name;
-  });
-  console.log(thisParameterCfgs);
+  }).sort((a,b)=> a.index-b.index);
+  
+
   thisParameterCfgs. map(cfg => {
       if (cfg.inType === "path" ||
         cfg.inType === "header" ||

@@ -1,7 +1,8 @@
 /// <reference path = "../../types/CommonTypes.ts" /> 
 /// <reference path = "../../types/WebTypes.ts" /> 
 import { SwaggerTypes } from "../../types/SwaggerTypes";
-import {swaggerApiList,swaggerParameterCfgList,swaggerApiResultList} from '../'
+import {swaggerApiList,swaggerParameterCfgList,swaggerApiResultList,swaggerControllerCfgList} from '../'
+
 
 
 const createSwaggerApiDeccorator = <T>(key: keyof SwaggerTypes.SwaggerApiCfg) => (
@@ -31,6 +32,10 @@ export const SApiSummary = createSwaggerApiDeccorator<string>("summary");
 export const SApiHttpMethod = createSwaggerApiDeccorator<WebTypes.HttpMethod>(
   "httpMethod"
 );
+
+export const SApiController=(data:{target:CommonTypes.Type<any>,path:string})=>{
+  swaggerControllerCfgList.push(data);
+}
 
 // export const SApiDescription = createSwaggerApiDeccorator<string>(
 //   "description"

@@ -1,36 +1,20 @@
+/// <reference path = "../types/CommonTypes.ts" />
 import Koa, { Context, Request, Response } from "koa";
 import Router from "koa-router";
 import koaBody from "koa-body";
 import "reflect-metadata";
-import {
-  controllerList,
-  routeList,
-  paramList,
-} from "../mvc/";
-import { importClassesFromDirectories,Injector } from "../util/";
-import {handlerSwaggerToDocument} from '../swagger/SwaggerHandler';
+import { controllerList, routeList, paramList } from "../mvc/";
+import { importClassesFromDirectories, Injector } from "../util/";
+import { handlerSwaggerToDocument } from "../swagger/SwaggerHandler";
 import { SwaggerTypes } from "../types/SwaggerTypes";
-
+import { ui } from "swagger2-koa";
+import {Document} from 'swagger2/src/schema';
 
 const router = new Router();
-type NextFunction = () => Promise<any>;
-
-export interface IKoaControllerOptions {
-  controllers: Array<string>;
-  basePath?: string;
-  versions?: Array<number | string> | object;
-  disableVersioning?: boolean;
-  initBodyParser?: boolean;
-  boomifyErrors?: boolean;
-  attachRoutes?: boolean;
-  router?: any;
-  flow?: Array<Function>;
-}
-
-export let options: IKoaControllerOptions;
+export let options: CommonTypes.IKoaControllerOptions;
 export const bootstrapControllers = async (
   app: Koa,
-  params: IKoaControllerOptions
+  params: CommonTypes.IKoaControllerOptions
 ) => {
   options = params;
   options.versions = options.versions || { 1: true };
@@ -67,19 +51,12 @@ export const bootstrapControllers = async (
   }
   const routes = controllerToRoutes(params);
 
-  const d=handlerSwaggerToDocument();
-
-  app.use(async (ctx,next)=>{
-    ctx.body=d;
-  })
+  app.use(ui((handlerSwaggerToDocument(options) as Document), "/swagger"));
 
   app.use(routes);
 };
 
-
-
-
-function controllerToRoutes(params: IKoaControllerOptions) {
+function controllerToRoutes(options: CommonTypes.IKoaControllerOptions) {
   controllerList.forEach(controller => {
     const { path: basePath, target: cTarget } = controller;
     // 反射具体实现类创建
@@ -97,7 +74,9 @@ function controllerToRoutes(params: IKoaControllerOptions) {
           )
         );
         router[type](
-          `${params.basePath ? params.basePath : ""}${basePath}${path}`,
+          `${
+            options.swaggerDoc.basePath ? options.swaggerDoc.basePath : ""
+          }${basePath}${path}`,
           handler
         );
         // use handler方法
@@ -111,7 +90,7 @@ function handlerFactory(
   func: (...args: any[]) => any,
   paramList: SwaggerTypes.ParamConfig[]
 ) {
-  return async (ctx: Context, next: NextFunction) => {
+  return async (ctx: Context, next: CommonTypes.NextFunction) => {
     try {
       // 获取路由函数的参数
       const args = extractParameters(
@@ -135,7 +114,7 @@ function parseData(value: any, parse: SwaggerTypes.ParseType) {
     return value;
   }
   switch (parse) {
-    case "number":
+    case "integer":
       value = +value;
       break;
     case "string":
@@ -151,7 +130,7 @@ function parseData(value: any, parse: SwaggerTypes.ParseType) {
 function extractParameters(
   req: Request,
   res: Response,
-  next: NextFunction,
+  next: CommonTypes.NextFunction,
   paramArr: SwaggerTypes.ParamConfig[] = []
 ) {
   if (!paramArr.length) return [req, res, next];

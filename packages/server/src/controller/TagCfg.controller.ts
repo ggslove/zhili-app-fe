@@ -25,7 +25,10 @@ class TagCfgController {
 
   @Get("/index")
   @sTag
-  index(@Query({ key: "id", parse: "number", isArray: false }) id: number): string {
+  @SApiSummary("这是一个测试接口描述")
+  index(@Query({ key: "id", parse: "integer",required:true,format:"int32", description:"这是一个测试字段", isArray: false }) id: number,
+  @Query({ key: "name", parse: "string",required:true, description:"这是一个测试字段string", isArray: false }) name: string
+  ): string {
     // 装饰参数
     return this.tagCfgService.pageByName("nanana:" + id).test;
   }
@@ -58,7 +61,7 @@ class TagCfgController {
     { code: HttpStatus.BAD_REQUEST, type: "string", description: "BAD_REQUEST" }
   ])
   get(
-    @Path({ key: "id", parse: "number" })
+    @Path({ key: "id", parse: "integer" })
     id: number
   ): ReponseData<any> {
     return ResponseBuilder()

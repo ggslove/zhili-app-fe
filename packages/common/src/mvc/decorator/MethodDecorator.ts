@@ -1,7 +1,8 @@
 /// <reference path = "../../types/CommonTypes.ts" /> 
 /// <reference path = "../../types/WebTypes.ts" /> 
 import { SApiHttpMethod, SApiPath } from "../../swagger/decorator";
-import { routeList } from '../'
+import { routeList } from '../';
+import {path2Swagger} from '../../util';
 
 export function createMethodDecorator(type: WebTypes.HttpMethod = "get") {
   return (path = "/"): CommonTypes.GenericMethodDecorator<any> =>
@@ -15,7 +16,7 @@ export function createMethodDecorator(type: WebTypes.HttpMethod = "get") {
         func: descriptor.value
       });
       //加入 Swagger的 HttpMethod 内容
-      SApiPath(path)(target, name, descriptor);
+      SApiPath(path2Swagger(path))(target, name, descriptor);
       SApiHttpMethod(type)(target, name, descriptor);
     };
 }

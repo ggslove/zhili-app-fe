@@ -1,7 +1,7 @@
 /// <reference path = "../types/CommonTypes.ts" /> 
 import { SwaggerTypes } from "../types/SwaggerTypes";
 
-
+export const swaggerControllerCfgList:Array<SwaggerTypes.SwaggerControllerCfg>=[];
 export const swaggerApiList: Array<SwaggerTypes.SwaggerApiCfg> = [];
 export const swaggerParameterCfgList: Array<SwaggerTypes.SwaggerParameterCfg> = [];
 export const swaggerApiResultList:Array<SwaggerTypes.SwaggerApiResultCfg>=[];
