@@ -11,12 +11,6 @@ import {
   SApiSummary,
   SApiResult
 } from "@zhili/common/src/swagger/decorator";
-import { TagCfgDto } from "src/dto";
-import { ResponseBuilder, ReponseData } from "src/vo/Response.vo";
-import HttpStatus from "@zhili/common/src/util/HttpStatus";
-import { TagCfgVo } from "src/vo/TagCfg.vo";
-import TagCfgService from "../service/TagCfg.service";
-import { PaginationVo } from "src/vo/Pagination.vo";
 import { AffectVo } from "src/vo/Affect.vo";
 
 

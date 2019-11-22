@@ -1,8 +1,7 @@
 import { getCustomRepository } from "typeorm";
-import TagCfgRepository from "../repository/TagCfg.repository";
 import { Service } from "@zhili/common/src/mvc/decorator/";
 import { TagCfgDto } from "src/dto";
-import { TagCfg } from "@zhili/character-tag/src";
+import TagCfgRepository from "../repository/TagCfg.repository";
 import { AffectVo } from "src/vo/Affect.vo";
 
 @Service()
@@ -42,7 +41,7 @@ export default class TagCfgService {
     //const meta=this.tagCfgRepository.metadata;
   }
 
-  async list(tagCfgDto:TagCfg):Promise<any>{
+  async list(tagCfgDto:TagCfgDto):Promise<any>{
    //TODO 处理具体的搜索
 
   }

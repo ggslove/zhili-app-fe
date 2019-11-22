@@ -11,6 +11,7 @@ import {
 
 import { validateSwaggerApi, validateSwaggerClass,showSwaggerCfgs } from "./validate";
 import { Tag } from "swagger2/src/schema";
+import { logger } from "../util";
 export const handlerSwaggerToDocument = (
   options: CommonTypes.IKoaControllerOptions
 ) => {
@@ -72,6 +73,7 @@ export const handlerSwaggerToDocument = (
   // })
 
     const fullPath = `${thisApiSwaggerControllers[0].path}${swaggerApiCfg.path!}`;
+    logger.log("api full path is "+fullPath);
     if (!paths.hasOwnProperty(fullPath)) {
       paths[fullPath] = {};
     }
@@ -84,14 +86,15 @@ export const handlerSwaggerToDocument = (
       produces: swaggerApiCfg.produces
     };
     //------------parameters--------------
-    path[swaggerApiCfg.httpMethod!][
-      "parameters"
-    ] = handerSwaggerApiCfgParameters(swaggerApiCfg);
+    path[swaggerApiCfg.httpMethod!]["parameters"] = handerSwaggerApiCfgParameters(swaggerApiCfg);
     //------------responses--------------
     path[swaggerApiCfg.httpMethod!]["responses"] = handerSwaggerApiCfgResponse(
       swaggerApiCfg
     );
+    const pathData= path[swaggerApiCfg.httpMethod!];
+    console.log(pathData)
   });
+
 
   return {
     ...options.swaggerDoc,
@@ -202,12 +205,7 @@ function handerSwaggerApiCfgParameters(
           in: cfg.inType,
           required: cfg.required,
           description: cfg.description,
-          schema: {
-            type: "array",
-            items: {
-              $ref: `#/definitions/${cfg.ref!.name}`
-            }
-          }
+          schema: {type: "array",items: { $ref: `#/definitions/${cfg.ref!.name}`}}
         });
       } else {
         parameters.push({
@@ -215,9 +213,7 @@ function handerSwaggerApiCfgParameters(
           in: cfg.inType,
           required: cfg.required,
           description: cfg.description,
-          schema: {
-            $ref: `#/definitions/${cfg.ref!.name}`
-          }
+          schema: {$ref: `#/definitions/${cfg.ref!.name}`}
         });
       }
     }
@@ -263,7 +259,6 @@ function handerSwaggerApiCfgResponse(
   return responses;
 }
 
-
 const checkResponses=(responses:{[key:string]:any})=>{
   if(!responses["500"]){
     responses["500"]={type:"string",description:"Internal Server Error"}
@@ -278,6 +273,9 @@ const paginationSchema=(refName:string)=>{
     properties: {
       count: {
         type: "integer"
+      },
+      pageNum:{
+        type:"integer"
       },
       rows: {
         type: "array",

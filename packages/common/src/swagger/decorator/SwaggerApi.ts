@@ -46,8 +46,8 @@ export const SApiParameter = (cfg:SwaggerTypes.ISwaggerParameterCfg
 ) => {
   swaggerParameterCfgList.push({
     target,
+    ...cfg,
     name,
-    ...cfg
   });
 };
 

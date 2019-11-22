@@ -3,6 +3,14 @@ export class AffectVo {
   affected = undefined;
 }
 
+export class TagCfg {
+  /** name */
+  name = '';
+
+  /** sqlContent */
+  sqlContent = '';
+}
+
 export class TagCfgDto {
   /** name */
   name = '';

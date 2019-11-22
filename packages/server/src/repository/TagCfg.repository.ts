@@ -1,5 +1,5 @@
 import { Repository, EntityRepository } from "typeorm";
-import { TagCfg } from "@zhili/character-tag/src";
+import TagCfg from "src/entity/TagCfg.entity";
 @EntityRepository(TagCfg)
 export default class TagCfgRepository extends Repository<TagCfg> {
   pageByName(name: string) {

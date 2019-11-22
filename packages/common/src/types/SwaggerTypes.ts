@@ -96,6 +96,9 @@ export namespace SwaggerTypes {
 
   export type ParseType = "object" | "string" | "integer"| "boolean"; //基本类型｜数组｜对象
 
+
+  type cansh="A"|"B";
+
   export interface IParamCfg {
     key: string; //关键字，query的name
     parse: ParseType;
@@ -105,8 +108,11 @@ export namespace SwaggerTypes {
     collectionFormat?: any;
     ref?: CommonTypes.Type<any>;
 
-    [key: string]: any;
+    [key :string]: any;
   }
+
+ 
+ 
 
   export interface IParamCfgHasArray extends IParamCfg {
     isArray: boolean;

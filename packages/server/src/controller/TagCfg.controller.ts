@@ -12,13 +12,14 @@ import {
   SApiResult
 } from "@zhili/common/src/swagger/decorator";
 import { TagCfgDto } from "src/dto";
-import { ResponseBuilder, ReponseData } from "src/vo/Response.vo";
 import HttpStatus from "@zhili/common/src/util/HttpStatus";
 import { TagCfgVo } from "src/vo/TagCfg.vo";
-import TagCfgService from "../service/TagCfg.service";
-import { PaginationVo } from "src/vo/Pagination.vo";
+import TagCfgService from "src/service/TagCfg.service";
 import { AffectVo } from "src/vo/Affect.vo";
-import { TagCfg } from "@zhili/character-tag/src";
+import TagCfg from "src/entity/TagCfg.entity";
+
+
+
 // const sTag = SApiTags(["TagCfg"]);
 
 /**
@@ -47,18 +48,18 @@ class TagCfgController {
     return await this.tagCfgService.remove(id);
   }
 
+  // 直接返entity对象
+  @Post("/search")
+  @SApiResult([
+    {code:200,type:"pagination",ref:TagCfg}
+  ])
+  @SApiSummary("分页查询TagCfg")
 
-  //直接返entity对象
-  // @Post("/search")
-  // @SApiResult([
-  //   {code:200,type:"array",ref:TagCfg}
-  // ])
-  // @SApiSummary("分页查询TagCfg")
-  // public async search(
-  //   @Query({key:"body",name:"body",parse:"object",isArray:false}) 
-  //   tagCfgDto:TagCfgDto) {
+  public async search(
+    @Body({key:"body",parse:"object",ref:TagCfgDto,isArray:false}) 
+    tagCfgDto:TagCfgDto) {
       
-  // }
+  }
 
 
 

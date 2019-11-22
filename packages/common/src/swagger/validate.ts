@@ -23,7 +23,7 @@ export const showSwaggerCfgs=()=>{
   };
   const keyNames=Object.keys(cfg);
   keyNames.map((keyName:string)=>{
-    logger.log(`输出${keyName}`)
+    logger.log(`${keyName}:\r\n[`)
     const dataArray=cfg[keyName];
     dataArray.map((item:any,idx:number)=>{
       if(typeof item==='object'){
@@ -50,11 +50,12 @@ export const showSwaggerCfgs=()=>{
             }
           }
         })
-        logger.log(`${idx}:${JSON.stringify(itemShow)}`);     
+        logger.log(`\t${idx}:${JSON.stringify(itemShow)}`);     
       }else{
-        logger.log(`${idx}:${JSON.stringify(item)}`);     
+        logger.log(`\t${idx}:${JSON.stringify(item)}`);     
       }
     })
+    logger.log(`]`)
   })
 }
 
