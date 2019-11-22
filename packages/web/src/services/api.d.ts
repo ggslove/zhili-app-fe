@@ -31,6 +31,21 @@ declare namespace API {
    */
   export namespace tagcfg {
     /**
+     * 分页查询TagCfg
+     * /tagcfg/page
+     */
+    export namespace page {
+      export class Params {}
+
+      export type Response = object;
+      export const init: Response;
+      export function request(
+        params: Params,
+        bodyParams: defs.TagCfgDto,
+      ): Promise<object>;
+    }
+
+    /**
      * undefined
      * /tagcfg/save
      */
@@ -43,21 +58,6 @@ declare namespace API {
         params: Params,
         bodyParams: defs.TagCfgDto,
       ): Promise<defs.AffectVo>;
-    }
-
-    /**
-     * 分页查询TagCfg
-     * /tagcfg/search
-     */
-    export namespace search {
-      export class Params {}
-
-      export type Response = object;
-      export const init: Response;
-      export function request(
-        params: Params,
-        bodyParams: defs.TagCfgDto,
-      ): Promise<object>;
     }
 
     /**

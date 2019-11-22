@@ -3,6 +3,8 @@ import { Service } from "@zhili/common/src/mvc/decorator/";
 import { TagCfgDto } from "src/dto";
 import TagCfgRepository from "../repository/TagCfg.repository";
 import { AffectVo } from "src/vo/Affect.vo";
+import { PageVo } from "src/vo/Page.vo";
+import TagCfg from "src/entity/TagCfg.entity";
 
 @Service()
 export default class TagCfgService {
@@ -36,12 +38,12 @@ export default class TagCfgService {
 
   }
   // 返回的具体参数
-  async page(tagCfgDto:TagCfgDto):Promise<any>{
-    //TODO 处理具体的搜索
+  async page(dto:TagCfgDto):Promise<PageVo<TagCfg>>{
     //const meta=this.tagCfgRepository.metadata;
+    return {count:10,pageNum:dto.pageNum,rows:[]}
   }
 
-  async list(tagCfgDto:TagCfgDto):Promise<any>{
+  async list(dto:TagCfgDto):Promise<any>{
    //TODO 处理具体的搜索
 
   }

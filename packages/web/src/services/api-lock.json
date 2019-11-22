@@ -5,13 +5,14 @@
         "description": "标签配置",
         "interfaces": [
           {
-            "name": "save",
+            "description": "分页查询TagCfg",
+            "name": "page",
             "method": "post",
-            "path": "/tagcfg/save",
+            "path": "/tagcfg/page",
             "response": {
               "typeArgs": [],
-              "typeName": "AffectVo",
-              "isDefsType": true,
+              "typeName": "object",
+              "isDefsType": false,
               "templateIndex": -1,
               "compileTemplateKeyword": "#/definitions/",
               "enum": []
@@ -32,14 +33,13 @@
             ]
           },
           {
-            "description": "分页查询TagCfg",
-            "name": "search",
+            "name": "save",
             "method": "post",
-            "path": "/tagcfg/search",
+            "path": "/tagcfg/save",
             "response": {
               "typeArgs": [],
-              "typeName": "object",
-              "isDefsType": false,
+              "typeName": "AffectVo",
+              "isDefsType": true,
               "templateIndex": -1,
               "compileTemplateKeyword": "#/definitions/",
               "enum": []

@@ -11,7 +11,7 @@ export const init = undefined;
 
 export async function request(params, bodyParams) {
   return pontFetch({
-    url: '/tagcfg/search',
+    url: '/tagcfg/page',
     params: bodyParams,
     method: 'post',
   });

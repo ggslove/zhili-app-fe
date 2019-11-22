@@ -17,6 +17,7 @@ import { TagCfgVo } from "src/vo/TagCfg.vo";
 import TagCfgService from "src/service/TagCfg.service";
 import { AffectVo } from "src/vo/Affect.vo";
 import TagCfg from "src/entity/TagCfg.entity";
+import { PageVo } from "src/vo/Page.vo";
 
 
 
@@ -49,19 +50,16 @@ class TagCfgController {
   }
 
   // 直接返entity对象
-  @Post("/search")
+  @Post("/page")
   @SApiResult([
     {code:200,type:"pagination",ref:TagCfg}
   ])
   @SApiSummary("分页查询TagCfg")
-
-  public async search(
+  public async page(
     @Body({key:"body",parse:"object",ref:TagCfgDto,isArray:false}) 
-    tagCfgDto:TagCfgDto) {
-      
+    tagCfgDto:TagCfgDto):Promise<PageVo<TagCfg>> {
+      return this.tagCfgService.page(tagCfgDto);
   }
-
-
 
 
   // @Get("/index")
