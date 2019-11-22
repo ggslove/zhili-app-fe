@@ -3,14 +3,12 @@
 import { SwaggerTypes } from "../../types/SwaggerTypes";
 import { swaggerClassCfgList, swaggerFieldCfgList } from '../'
 
-export function SwgClass(name: string = ""): CommonTypes.GenericClassDecorator<any> {
+export function SwgClass(): CommonTypes.GenericClassDecorator<any> {
   return (target: CommonTypes.Type<any>) => {
-    if (name == "") {
-      name = target.name;
-    }
-    console.log(target);
     //这里使用的是 具function类，与 methodDecorator中的target target.property=== target
-    swaggerClassCfgList.push({ target, type: "object", className: name });
+    //如何把entity都加入进来
+    
+    swaggerClassCfgList.push({ target, type: "object", className: target.name });
   };
 }
 
@@ -18,11 +16,9 @@ export function SwgProperty(
   prop: SwaggerTypes.SwaggerFieldProp
 ): CommonTypes.GenericPropertyDecorator<any> {
   return (target: any, propertyKey: any) => {
-    console.log(target);
     swaggerFieldCfgList.push({ target, name: propertyKey, ...prop });
   };
 }
-
 
 //注释类编写
 // @swaggerClass()
@@ -31,7 +27,6 @@ export function SwgProperty(
 //   @swaggerProperty({ type: "string", required: true }) NickName: string = "";
 //   @swaggerProperty({ type: "string", required: true }) Password: string = "";
 // };
-
 // @body((userInfo as any).swaggerDocument)
 // static async Register(ctx: Router.IRouterContext) {
 //   var params = (ctx as any).validatedBody as userInfo;

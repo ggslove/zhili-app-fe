@@ -49,7 +49,7 @@ namespace CommonTypes {
     basePath?: string;
     info: SwaggerInfo;
     host?: string;
-    schemes?: Array<'http' | 'https' | 'ws' | 'wss'>[];
+    schemes?: Array<'http' | 'https' | 'ws' | 'wss'>;
     consumes?: string[];
 
     [extension: string]: any;

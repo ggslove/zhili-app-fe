@@ -18,6 +18,7 @@ import { TagCfgVo } from "src/vo/TagCfg.vo";
 import TagCfgService from "../service/TagCfg.service";
 import { PaginationVo } from "src/vo/Pagination.vo";
 import { AffectVo } from "src/vo/Affect.vo";
+import { TagCfg } from "@zhili/character-tag/src";
 // const sTag = SApiTags(["TagCfg"]);
 
 /**
@@ -29,7 +30,7 @@ class TagCfgController {
   public constructor(protected tagCfgService: TagCfgService) {}
 
 
-  @Post("/")
+  @Post("/save")
   @SApiResult([
     {code:200,type:"object",ref:AffectVo}
   ])
@@ -45,6 +46,22 @@ class TagCfgController {
   public async remove(@Path({key:"id",parse:"integer",required:true}) id:number) {
     return await this.tagCfgService.remove(id);
   }
+
+
+  //直接返entity对象
+  // @Post("/search")
+  // @SApiResult([
+  //   {code:200,type:"array",ref:TagCfg}
+  // ])
+  // @SApiSummary("分页查询TagCfg")
+  // public async search(
+  //   @Query({key:"body",name:"body",parse:"object",isArray:false}) 
+  //   tagCfgDto:TagCfgDto) {
+      
+  // }
+
+
+
 
   // @Get("/index")
   // @sTag

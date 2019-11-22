@@ -7,7 +7,58 @@ import {
   swaggerApiResultList,
 } from "./";
 import { SwaggerTypes } from "../types/SwaggerTypes";
-import { ErrorMessage } from "../util";
+import { ErrorMessage,logger } from "../util";
+import { array } from "joi";
+
+
+
+export const showSwaggerCfgs=()=>{
+  logger.log("开始打印 swagger配置 ")
+  const cfg:{[key:string]:any}={
+    swaggerApiList,
+    swaggerParameterCfgList,
+    swaggerClassCfgList,
+    swaggerFieldCfgList,
+    swaggerApiResultList,
+  };
+  const keyNames=Object.keys(cfg);
+  keyNames.map((keyName:string)=>{
+    logger.log(`输出${keyName}`)
+    const dataArray=cfg[keyName];
+    dataArray.map((item:any,idx:number)=>{
+      if(typeof item==='object'){
+        let itemShow:{[i:string]:string}={};
+        const keysInItem=Object.keys(item);
+        keysInItem.map(keyInItem=>{
+          if(typeof item[keyInItem]==='undefined'||item[keyInItem]==null){
+            itemShow[keyInItem]=`null`;
+          }else{
+            if(typeof item[keyInItem]==='object'){
+              if(item[keyInItem].constructor&&item[keyInItem].constructor.name){
+                itemShow[keyInItem]=`object<${item[keyInItem].constructor.name}>`;
+              }
+              else{
+                itemShow[keyInItem]=`object<>`;
+              }
+            }
+            else 
+            if(typeof item[keyInItem]==='function'){
+              itemShow[keyInItem]=`function<${item[keyInItem].name}>`;
+            }
+            else{
+              itemShow[keyInItem]=`${item[keyInItem]}`;
+            }
+          }
+        })
+        logger.log(`${idx}:${JSON.stringify(itemShow)}`);     
+      }else{
+        logger.log(`${idx}:${JSON.stringify(item)}`);     
+      }
+    })
+  })
+}
+
+
 export const validateSwaggerApi = (errMessages: Array<string>) => {
   swaggerApiList.map((cfg, idx) => {
     try {
@@ -53,7 +104,6 @@ export const validateSwaggerClass = (errorMessages: Array<string>) => {
     } catch (err) {
       errorMessages.push(err.message);
     }
-
     //字段-> 类
     //todo 
     // if (allClassList.indexOf(fieldCfg.target) == -1) {
@@ -77,7 +127,7 @@ export const validateSwaggerClass = (errorMessages: Array<string>) => {
     //校验 ref 必须存在
     if (apiCfg.type != "string" && apiCfg.ref && allClassList.indexOf(apiCfg.ref.prototype) == -1) {
       errorMessages.push(
-        `swaggerApiResultList${idx}条数据的ref,ref为${apiCfg.ref!.name}没有@SwaggerClass类型`
+        `swaggerApiResultList第${idx}条数据的ref,ref为${apiCfg.ref!.name}没有@SwaggerClass类型`
       );
     }
 

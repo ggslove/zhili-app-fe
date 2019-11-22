@@ -8,8 +8,7 @@ import { importClassesFromDirectories, Injector,findKeyNameValueInPath } from ".
 import { handlerSwaggerToDocument } from "../swagger/SwaggerHandler";
 import { SwaggerTypes } from "../types/SwaggerTypes";
 import { ui } from "swagger2-koa";
-import {Document} from 'swagger2/src/schema';
-
+import {Document} from 'swagger2/';
 
 
 const router = new Router();
@@ -53,7 +52,7 @@ export const bootstrapControllers = async (
   }
   const routes = controllerToRoutes(params);
 
-  app.use(ui((handlerSwaggerToDocument(options) as Document), "/swagger"));
+  app.use(ui((handlerSwaggerToDocument(options)), "/swagger"));
 
   app.use(routes);
 };
@@ -82,7 +81,7 @@ function controllerToRoutes(options: CommonTypes.IKoaControllerOptions) {
       });
   });
 
-  console.log(router.routes());
+ 
   return router.routes();
 }
 

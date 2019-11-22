@@ -9,11 +9,13 @@ import {
   swaggerControllerCfgList
 } from ".";
 
-import { validateSwaggerApi, validateSwaggerClass } from "./validate";
+import { validateSwaggerApi, validateSwaggerClass,showSwaggerCfgs } from "./validate";
 import { Tag } from "swagger2/src/schema";
 export const handlerSwaggerToDocument = (
   options: CommonTypes.IKoaControllerOptions
 ) => {
+
+  showSwaggerCfgs()
   //处理 swagger 数据
   const swaggerClassMap: Map<
     CommonTypes.Type<any>,
@@ -27,7 +29,7 @@ export const handlerSwaggerToDocument = (
   if (errorMessages.length > 0) {
     console.error("-------swagger 配置异常---------------");
     console.error(errorMessages.join("\r\n"));
-    return null;
+    throw new Error("swagger 配置失败...")
   }
   swaggerFieldCfgList.map((fieldCfg, index) => {
     if (!swaggerClassMap.has(fieldCfg.target)) {
@@ -37,12 +39,13 @@ export const handlerSwaggerToDocument = (
   });
   const definitions = handlerSwaggerDefinitions(swaggerClassMap);
   const paths: { [key: string]: { [key: string]: any } } = {};
-  const allTagMap:Map<CommonTypes.Type<any>,SwaggerTypes.SwaggerTagInfo>=new Map();
+  const allTagMap:Map<CommonTypes.Type<any>,Tag>=new Map();
   
   swaggerControllerCfgList.map(ctl=>{
     allTagMap.set(ctl.target.prototype,{name:ctl.name,description:ctl.description});
   })
-  const allTags:Array<SwaggerTypes.SwaggerTagInfo>=[];
+  const allTags:Array<Tag>=[];
+  
   allTagMap.forEach(element => {
     allTags.push(element)
   });
@@ -68,9 +71,7 @@ export const handlerSwaggerToDocument = (
   //   }
   // })
 
-    const fullPath = `${
-      thisApiSwaggerControllers[0].path
-    }${swaggerApiCfg.path!}`;
+    const fullPath = `${thisApiSwaggerControllers[0].path}${swaggerApiCfg.path!}`;
     if (!paths.hasOwnProperty(fullPath)) {
       paths[fullPath] = {};
     }
@@ -92,7 +93,6 @@ export const handlerSwaggerToDocument = (
     );
   });
 
-  console.log(allTags);
   return {
     ...options.swaggerDoc,
     tags:allTags,

@@ -1,0 +1,140 @@
+[
+  {
+    "mods": [
+      {
+        "description": "标签配置",
+        "interfaces": [
+          {
+            "name": "save",
+            "method": "post",
+            "path": "/tagcfg/",
+            "response": {
+              "typeArgs": [],
+              "typeName": "AffectVo",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": []
+            },
+            "parameters": [
+              {
+                "in": "body",
+                "name": "body",
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "TagCfgDto",
+                  "isDefsType": true,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": []
+                }
+              }
+            ]
+          },
+          {
+            "description": "删除标签配置TagCfg",
+            "name": "remove",
+            "method": "delete",
+            "path": "/tagcfg/{id}",
+            "response": {
+              "typeArgs": [],
+              "typeName": "AffectVo",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": []
+            },
+            "parameters": [
+              {
+                "in": "path",
+                "name": "id",
+                "required": true,
+                "dataType": {
+                  "typeArgs": [],
+                  "typeName": "number",
+                  "isDefsType": false,
+                  "templateIndex": -1,
+                  "compileTemplateKeyword": "#/definitions/",
+                  "enum": []
+                }
+              }
+            ]
+          }
+        ],
+        "name": "tagcfg"
+      },
+      {
+        "description": "标签类型",
+        "interfaces": [
+          {
+            "description": "测试第一个方法",
+            "name": "test",
+            "method": "get",
+            "path": "/tagtype/test",
+            "response": {
+              "typeArgs": [],
+              "typeName": "AffectVo",
+              "isDefsType": true,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": []
+            },
+            "parameters": []
+          }
+        ],
+        "name": "tagtype"
+      }
+    ],
+    "baseClasses": [
+      {
+        "name": "AffectVo",
+        "properties": [
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": []
+            },
+            "name": "affected",
+            "required": false
+          }
+        ],
+        "templateArgs": []
+      },
+      {
+        "name": "TagCfgDto",
+        "properties": [
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "string",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": []
+            },
+            "name": "name",
+            "required": false
+          },
+          {
+            "dataType": {
+              "typeArgs": [],
+              "typeName": "number",
+              "isDefsType": false,
+              "templateIndex": -1,
+              "compileTemplateKeyword": "#/definitions/",
+              "enum": []
+            },
+            "name": "pageNum",
+            "required": false
+          }
+        ],
+        "templateArgs": []
+      }
+    ],
+    "name": ""
+  }
+]
