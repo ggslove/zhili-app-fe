@@ -13,6 +13,5 @@ tgz
 log
 /packages/**/node_modules
 /package/**/dist
-/packages/swagger2
 *.log
 *.lock
