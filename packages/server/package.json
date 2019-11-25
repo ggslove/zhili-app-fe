@@ -8,7 +8,7 @@
     "build1": "tsc --outDir ./dist"
   },
   "dependencies": {
-    "@zhili/common":"1.0.0",
+    "@zhili/common": "1.0.0",
     "joi": "^14.3.1",
     "koa": "^2.11.0",
     "koa-body": "^4.1.1",
@@ -18,7 +18,8 @@
     "moment": "^2.24.0",
     "mysql": "^2.17.1",
     "reflect-metadata": "^0.1.13",
-    "ts-node-dev": "^1.0.0-pre.44"
+    "ts-node-dev": "^1.0.0-pre.44",
+    "typeorm": "^0.2.20"
   },
   "devDependencies": {
     "@types/jest": "^24.0.21",
@@ -29,7 +30,7 @@
     "cross-env": "5.0.5",
     "jest": "^24.9.0",
     "ts-node-register": "^1.0.0",
-    "tsconfig-paths":"^3.9.0",
+    "tsconfig-paths": "^3.9.0",
     "typescript": "^3.6.4"
   }
 }
