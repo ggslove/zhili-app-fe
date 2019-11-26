@@ -4,3 +4,6 @@
 [submodule "packages/react-app-zl"]
 	path = packages/react-app-zl
 	url = git@github.com:ggslove/react-app-zl.git
+[submodule "packages/react-web-tag"]
+	path = packages/react-web-tag
+	url = git@github.com:ggslove/react-web-tag.git
