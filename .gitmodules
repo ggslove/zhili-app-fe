@@ -1,3 +1,6 @@
 [submodule "packages/swagger2"]
 	path = packages/swagger2
 	url = git@github.com:ggslove/swagger2.git
+[submodule "packages/react-app-zl"]
+	path = packages/react-app-zl
+	url = git@github.com:ggslove/react-app-zl.git
