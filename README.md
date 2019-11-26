@@ -1,5 +1,13 @@
 # zhili-app-fe
 
+## 多模块安装
+
+git clone --recurse-submodules
+
+然后使用 yarn install 安装包
+
+
+
 ## typescript IOC
 
 [typescript Decorator & 元数据反射](https://qianduan.group/posts/59977ed1b963854f926adcec)
