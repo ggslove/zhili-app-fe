@@ -6,7 +6,7 @@
     "packages/*"
   ],
   "scripts": {
-    "build": "lerna run build"
+    "dev": "lerna run zhili-dev"
   },
   "devDependencies": {
     "lerna": "^2.11.0"

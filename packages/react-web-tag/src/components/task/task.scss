@@ -1,0 +1,103 @@
+.task {
+  .left-task {
+    width: 270px;
+    background-color: #e8ebed;
+    box-shadow: 1px 0 1px 0 rgba(0,0,0,.06), inset -1px 0 0 0 rgba(255,255,255,.2);
+    border-right: 1px solid #d3caca;
+    padding: 10px;
+    .head-bar {
+      .add-action {
+        background-color: transparent;
+        height: 22px;
+        line-height: 22px;
+        float: right;
+        width: 32px;
+        padding: 0;
+        min-width: auto;
+        text-align: center;
+        cursor: pointer;
+        i {
+          color: black;
+        }
+      }
+      .add-action:hover {
+        background-color: #cfd6da;
+      }
+      .add-action:active {
+        background-color: transparent;
+      }
+    }
+    .ms-SearchBox {
+      background-color: transparent;
+      height: 28px;
+      margin-bottom: 5px;
+      border-color: #98b5dd;
+      .ms-SearchBox-iconContainer, input {
+        font-size: 12px;
+      }
+    }
+    .is-active {
+      border-bottom: 2px solid #4f82d3;
+    }
+    .task-list {
+      overflow-y: auto;
+      font-size: 12px;
+      width: calc(100% + 20px);
+      margin-left: -10px;
+      .overall, .task-title, .task-history-item {
+        height: 32px;
+        line-height: 32px;
+        padding-left: 12px;
+        cursor: pointer;
+      }
+      .overall, .task-title, .task-history-item {
+        i {
+          font-size: 14px;
+          float: left;
+          margin-right: 5px;
+        }
+        .title-name {
+          display: inline-block;
+          width: calc(100% - 30px);
+          overflow: hidden;
+          text-overflow: ellipsis;
+          white-space: nowrap;
+        }
+      }
+      .task-history {
+        .task-history-item {
+          padding-left: 24px;
+        }
+      }
+      .overall {
+        i {
+          color: #2b569a;
+        }
+      }
+      .overall:hover, .task-history-item:hover {
+        background-color: #d4e0f4;
+        .title-name {
+          color: #2b569a;
+        }
+      }
+      .task-history-item:hover {
+        i {
+          color: #2b569a;
+        }
+      }
+      .task-title:hover {
+        background-color: #d4e0f4;
+      }
+      .active {
+        background-color: #fff;
+        .title-name {
+          color: #2b569a;
+        }
+      }
+      .ant-pagination {
+        text-align: center;
+        font-size: 12px;
+      }
+    }
+  }
+}

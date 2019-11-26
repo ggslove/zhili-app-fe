@@ -1,0 +1,1 @@
+require('@zhili/react-app-zl/scripts/build');

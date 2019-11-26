@@ -1,0 +1,32 @@
+.result {
+  .container-fluid {
+    .row {
+      margin: 0;
+      .col {
+        height: 30px;
+        margin-top: 5px;
+        cursor: pointer;
+        .label {
+          height: 28px;
+          line-height: 28px;
+          white-space: nowrap;
+          width: 100%;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        .ms-TextField-fieldGroup, .ms-Dropdown-title {
+          height: 28px;
+          line-height: 28px;
+        }
+      }
+      .col:not(.active):hover {
+        background-color: #ecf0f3;
+        border: 1px dashed #2b579a;
+      }
+      .active{
+        background-color: #fff;
+        border: 1px dashed #2b579a;
+      }
+    }
+  }
+}
