@@ -5,6 +5,7 @@ import App from './app';
 import Operation from './operation';
 import Build from './build';
 import Sql from './sql';
+import Task from './task';
 const routerStore =  new RouterStore();
 
 export const rootStore = {
@@ -14,7 +15,8 @@ export const rootStore = {
   operation: new Operation(),
   build: new Build(),
   sql: new Sql(),
+  task: new Task(),
   router: routerStore,
 };
 
-export { User, System, App, Operation, Build, Sql }
+export { User, System, App, Operation, Build, Sql, Task }
